@@ -16,6 +16,10 @@ class App extends Component{
     }
   }
 
+  componentDidMount(){
+    
+  }
+
   render(){
     
     const mainStyle = {

@@ -10,8 +10,8 @@ export default class Flow extends Component{
         this.state = {
             clicked:false, // To display resize options
            
-            width: props.width,
-            height: props.height,
+            width: props.width??0,
+            height: props.height??0,
 
             x:props.x,
             y:props.y,
@@ -31,6 +31,8 @@ export default class Flow extends Component{
             origResizeW:0,
             origRisizeH:0,
             isResized: false,
+
+            mouseUp:false,
         };
     }
 
@@ -40,12 +42,6 @@ export default class Flow extends Component{
         height: node.getBoundingClientRect().height
     });
 
-    // Shows and hides the resize options
-    reveal = () =>{
-        this.setState({
-            clicked: !this.state.clicked,
-        });
-    }
 
     // OnMouseDown
     startMove = (e) =>{
@@ -61,6 +57,9 @@ export default class Flow extends Component{
             offsetY: e.clientY - this.state.y,
             isMoving: true,
             zIndex:1,
+
+            mouseUp:false,
+            clicked:true,
         }
 
         // Do regualar movement of Flow node
@@ -70,6 +69,7 @@ export default class Flow extends Component{
     // OnMouseUp
     endMove = () =>{
         this.setState({
+            mouseUp:true,
             isMoving: false,
             zIndex:0, // Back a layer
             topLeftResizeVal: 0,
@@ -79,7 +79,17 @@ export default class Flow extends Component{
         });
     }
 
+    unfocus = () => {
+        this.setState({
+            clicked:false,
+        });
+    }
+
     move = (e) => {
+
+        if (this.state.mouseUp){
+            return;
+        }
 
         let data = {
 
@@ -156,6 +166,8 @@ export default class Flow extends Component{
                 return;
         }
 
+        console.log("check");
+
         // For Regular Movement:
 
         if(this.state.isMoving){
@@ -192,7 +204,6 @@ export default class Flow extends Component{
         const styleWithChildren = {
             width: this.state.isResized ? this.state.width : "fit-content",
             height: this.state.isResized ? this.state.height : "fit-content",
-            padding:"10px",
             position:"absolute",
             top:this.state.y,
             left:this.state.x,
@@ -215,7 +226,7 @@ export default class Flow extends Component{
                 {/* The resizing buttons for controlling size*/}
                 {this.state.clicked ? 
                     <div className="resize">
-                        <div className="resize-buffer-space"></div>
+                        <div className="resize-buffer-space" onClick={this.unfocus}></div>
                         <div className="left-top resize-hover" onMouseDown={()=>this.setResizePos("1000")}></div>
                         <div className="right-top resize-hover" onMouseDown={()=>this.setResizePos("0100")}></div>
                         <div className="left-bottom resize-hover" onMouseDown={()=>this.setResizePos("0010")}></div>

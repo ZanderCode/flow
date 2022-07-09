@@ -25,12 +25,16 @@ resize option are small, so we need some area that is still
 draggable near the clickable area.
 */
 .resize-buffer-space{
-    width:500%;
-    height:500%;
+    width:100vw;
+    height:100vh;
     transform: translate(-50%,-50%);
     top:50%;
     left:50%;
     position: absolute;
+}
+
+.resize-buffer-space{
+    cursor:move;
 }
 
 :root{
