@@ -32,13 +32,13 @@ export default class Flow extends Component{
 
     startMove = () =>{
         this.setState({
-            isMoving: true
+            isMoving: true,
         });
     }
 
     endMove = () =>{
         this.setState({
-            isMoving: false
+            isMoving: false,
         });
     }
 
@@ -60,11 +60,18 @@ export default class Flow extends Component{
             position:"absolute",
             top:this.state.y,
             left:this.state.x,
-            backgroundColor:"lightgray"
+            backgroundColor:"lightgray",
+            borderRadius: "10px",
+            userSelect:"none"
         };
 
         return (
-            <div ref={this.ref} style={styleWithChildren} onClick={this.reveal} onMouseMove={this.move} onMouseDown={this.startMove} onMouseUp={this.endMove}>
+            <div ref={this.ref} 
+                style={styleWithChildren} 
+                onClick={this.reveal} 
+                onMouseMove={this.move} 
+                onMouseDown={this.startMove} 
+                onMouseUp={this.endMove}>
 
                 {/* The resizing buttons for controlling size*/}
                 {this.state.clicked ? 

@@ -3,6 +3,8 @@ import Flow from "./components/Flow";
 
 import {useDispatch} from "react-redux";
 
+import IMG from "./imgs/mush.jpg";
+
 class App extends Component{
 
   constructor(props){
@@ -39,6 +41,31 @@ class App extends Component{
             <li>Cap width</li>
           </ul>
         </Flow>
+
+        <Flow x={300} y={100}>
+          <h1>Mushroom 2</h1>
+          <ul>
+            <li>Hair?</li>
+            <li>Spore print</li>
+            <li>Cap width</li>
+          </ul>
+        </Flow>
+
+        <Flow x={500} y={100}>
+          <h1>Image Inspo</h1>
+          <img src={IMG} style={{width:"150px"}} draggable="false"/>
+        </Flow>
+
+        <Flow x={300} y={500}>
+          <h1>Important links</h1>
+          <ol>
+            <li><a href="#">death cap mushroom</a></li>
+            <li><a href="#">puff ball mushroom</a></li>
+            <li><a href="#">puff ball mushroom</a></li>
+            <li><a href="#">other inspiration</a></li>
+          </ol>
+        </Flow>
+
       </div>
     );
   }
