@@ -1,3 +1,8 @@
+:root{
+    --resize-size: 10px;
+    --rot-size:50px;
+}
+
 .resize{
     width:100%;
     height:100%;
@@ -6,6 +11,22 @@
     top:0;
     outline:3px solid green;
 } 
+
+.rotate{
+    width:var(--rot-size);
+    height:var(--rot-size);
+    position: absolute;
+    right:calc(-1 * (var(--rot-size)));
+    top:calc(-1 * (var(--rot-size)) + var(--rot-size));
+    width:"fit-content";
+    height:"fit-content";
+}
+
+.right-top-rotate{
+    display: flex;
+    justify-content: center;
+    align-items: middle;
+}
 
 .left-top{
     cursor:nw-resize;
@@ -35,10 +56,6 @@ draggable near the clickable area.
 
 .resize-buffer-space{
     cursor:move;
-}
-
-:root{
-    --resize-size: 10px;
 }
 .resize .left-top{
     position: absolute;

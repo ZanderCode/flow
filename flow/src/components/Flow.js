@@ -1,5 +1,5 @@
-import React, { Component, useRef } from "react";
-
+import ChangeCircleRoundedIcon from '@mui/icons-material/ChangeCircleRounded';
+import React, { Component, createRef } from "react";
 import "./Flow.css";
 
 export default class Flow extends Component{
@@ -8,7 +8,7 @@ export default class Flow extends Component{
         super(props);
         this.children = props.children;
         this.state = {
-            clicked:false, // To display resize options
+            clicked:false, // To display resize and rotation options
            
             width: props.width??0,
             height: props.height??0,
@@ -33,7 +33,15 @@ export default class Flow extends Component{
             isResized: false,
 
             mouseUp:false,
+
+            isRotating: false,
+            rotMagnet:false,
+            rot: 0
         };
+
+        window.addEventListener("keydown", this.keyDown, true);
+        window.addEventListener("keyup", this.keyUp, true);
+        window.addEventListener("mouseup", this.endMove, true);
     }
 
     // Used to get the Flow components width and height after mount
@@ -42,6 +50,24 @@ export default class Flow extends Component{
         height: node.getBoundingClientRect().height
     });
 
+    keyDown = (e) =>{
+        // CTRL key = 17
+        if (e.keyCode === 17 && this.state.isRotating) {
+            this.setState({
+                rotMagnet:true,
+            })
+        }
+    }
+
+    
+    keyUp = (e) =>{
+        // CTRL key = 17
+        if (e.keyCode === 17 && this.state.isRotating) {
+            this.setState({
+                rotMagnet:false,
+            })
+        }
+    }
 
     // OnMouseDown
     startMove = (e) =>{
@@ -59,7 +85,7 @@ export default class Flow extends Component{
             zIndex:1,
 
             mouseUp:false,
-            clicked:true,
+            clicked:true
         }
 
         // Do regualar movement of Flow node
@@ -76,12 +102,15 @@ export default class Flow extends Component{
             topRightResizeVal: 0,
             bottomLeftResizeVal: 0,
             bottomRightResizeVal: 0,
+            rotMagnet:false,
         });
     }
 
     unfocus = () => {
         this.setState({
             clicked:false,
+            isMoving:false,
+            isRotating:false
         });
     }
 
@@ -93,6 +122,29 @@ export default class Flow extends Component{
 
         let data = {
 
+        }
+
+
+        // For Rotating:
+
+        if (this.state.isRotating){
+
+            let rotash = Math.atan( (e.clientX-(this.state.x+(this.state.width)))/(e.clientY-(this.state.y+(this.state.height))) );
+            let degree = (rotash * (180 / Math.PI) * -1);
+            data = {
+                // The angle between the cursor and center of node
+                rot: degree
+            }
+
+            if (this.state.rotMagnet){
+                data = {
+                    // The angle between the cursor and center of node
+                    rot: Math.floor(degree / 15) * 15,
+                }
+            }
+
+            this.setState(data);
+            return;
         }
 
         // For Resizing:
@@ -166,12 +218,11 @@ export default class Flow extends Component{
                 return;
         }
 
-        console.log("check");
-
         // For Regular Movement:
 
         if(this.state.isMoving){
             this.setState({
+                clicked:false,
                 // Simply move component to mouse cursor - offset = drag from click "effect"
                 x:e.clientX - this.state.offsetX,
                 y:e.clientY - this.state.offsetY,
@@ -182,6 +233,7 @@ export default class Flow extends Component{
     onExit = () =>{
         this.setState({
             isMoving: false,
+            isRotating: false
         });
     }
 
@@ -196,6 +248,19 @@ export default class Flow extends Component{
             topRightResizeVal: parseInt(four[1]),
             bottomLeftResizeVal: parseInt(four[2]),
             bottomRightResizeVal: parseInt(four[3]),
+            isRotating:false
+        });
+    }
+
+    startRotation = () => {
+        this.setState({
+            isRotating: true
+        });
+    }
+
+    stopRotation = () => {
+        this.setState({
+            isRotating: false
         });
     }
 
@@ -211,7 +276,8 @@ export default class Flow extends Component{
             borderRadius: "10px",
             userSelect:"none",
             zIndex:this.state.zIndex,
-            textOverflow:"wrap"
+            textOverflow:"wrap",
+            transform: "rotate(" + this.state.rot  + "deg)"
         };
 
         return (
@@ -231,6 +297,14 @@ export default class Flow extends Component{
                         <div className="right-top resize-hover" onMouseDown={()=>this.setResizePos("0100")}></div>
                         <div className="left-bottom resize-hover" onMouseDown={()=>this.setResizePos("0010")}></div>
                         <div className="right-bottom resize-hover" onMouseDown={()=>this.setResizePos("0001")}></div>
+                    </div>
+                : <div></div>}
+
+                {this.state.clicked ? 
+                    <div className="rotate" >
+                        <div className="right-top-rotate rotate-hover" onMouseDown={this.startRotation} onMouseUp={this.stopRotation}>
+                            <ChangeCircleRoundedIcon/>
+                        </div>
                     </div>
                 : <div></div>}
 
