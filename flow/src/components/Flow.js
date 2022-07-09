@@ -28,6 +28,8 @@ export default class Flow extends Component{
             bottomRightResizeVal: 0,
             origResizeX:0,
             origRisizeY:0,
+            origResizeW:0,
+            origRisizeH:0,
             isResized: false,
         };
     }
@@ -108,25 +110,50 @@ export default class Flow extends Component{
             return;
         }
         // Top Right
-        if (!this.state.topLeftResizeVal &&
-             this.state.topRightResizeVal &&
-              !this.state.bottomLeftResizeVal &&
-               !this.state.bottomRightResizeVal){
+        if (this.state.topLeftResizeVal == 0 &&
+             this.state.topRightResizeVal == 1 &&
+              this.state.bottomLeftResizeVal == 0 &&
+               this.state.bottomRightResizeVal == 0){
 
+            data = {
+                x:e.clientX-this.state.width,
+                y:e.clientY,
+                width:this.state.origResizeW + (e.clientX- this.state.origResizeX),
+                height:this.state.origResizeH + (this.state.origResizeY - e.clientY),
+            }
+            this.setState(data);
+
+            return;
         }
         // Bottom Left
-        if (!this.state.topLeftResizeVal &&
-             !this.state.topRightResizeVal &&
-              this.state.bottomLeftResizeVal &&
-               !this.state.bottomRightResizeVal){
-
+        if (this.state.topLeftResizeVal == 0 &&
+             this.state.topRightResizeVal == 0 &&
+              this.state.bottomLeftResizeVal == 1 &&
+               this.state.bottomRightResizeVal == 0){
+                data = {
+                    x:e.clientX,
+                    y:e.clientY-this.state.height,
+                    width:this.state.origResizeW - (e.clientX- this.state.origResizeX),
+                    height:this.state.origResizeH - (this.state.origResizeY - e.clientY),
+                }
+                this.setState(data);
+    
+                return;
         }
         // Bottom Right
-        if (!this.state.topLeftResizeVal &&
-             !this.state.topRightResizeVal &&
-              !this.state.bottomLeftResizeVal &&
-               this.state.bottomRightResizeVal){
-
+        if (this.state.topLeftResizeVal == 0 &&
+             this.state.topRightResizeVal == 0 &&
+              this.state.bottomLeftResizeVal == 0 &&
+               this.state.bottomRightResizeVal == 1){
+                data = {
+                    x:e.clientX-this.state.width,
+                    y:e.clientY-this.state.height,
+                    width:this.state.origResizeW + (e.clientX - this.state.origResizeX),
+                    height:this.state.origResizeH + (e.clientY - this.state.origResizeY),
+                }
+                this.setState(data);
+    
+                return;
         }
 
         // For Regular Movement:
@@ -189,10 +216,10 @@ export default class Flow extends Component{
                 {this.state.clicked ? 
                     <div className="resize">
                         <div className="resize-buffer-space"></div>
-                        <div className="left-top" onMouseDown={()=>this.setResizePos("1000")}></div>
-                        <div className="right-top"></div>
-                        <div className="right-bottom"></div>
-                        <div className="left-bottom"></div>
+                        <div className="left-top resize-hover" onMouseDown={()=>this.setResizePos("1000")}></div>
+                        <div className="right-top resize-hover" onMouseDown={()=>this.setResizePos("0100")}></div>
+                        <div className="left-bottom resize-hover" onMouseDown={()=>this.setResizePos("0010")}></div>
+                        <div className="right-bottom resize-hover" onMouseDown={()=>this.setResizePos("0001")}></div>
                     </div>
                 : <div></div>}
 

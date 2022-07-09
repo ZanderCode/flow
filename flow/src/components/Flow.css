@@ -7,6 +7,18 @@
     outline:3px solid green;
 } 
 
+.left-top{
+    cursor:nw-resize;
+}
+.right-top{
+    cursor:ne-resize;
+}
+.left-bottom{
+    cursor:sw-resize;
+}
+.right-bottom{
+    cursor:se-resize;
+}
 /* 
 This is used because the clickable parts of the
 resize option are small, so we need some area that is still
