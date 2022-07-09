@@ -7,6 +7,20 @@
     outline:3px solid green;
 } 
 
+/* 
+This is used because the clickable parts of the
+resize option are small, so we need some area that is still
+draggable near the clickable area.
+*/
+.resize-buffer-space{
+    width:500%;
+    height:500%;
+    transform: translate(-50%,-50%);
+    top:50%;
+    left:50%;
+    position: absolute;
+}
+
 :root{
     --resize-size: 10px;
 }

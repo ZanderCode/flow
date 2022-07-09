@@ -14,12 +14,6 @@ class App extends Component{
     this.state = {
       focused: [null],
     }
-
-    this.doSomething = this.doSomething.bind(this);
-  }
-
-  doSomething(item){
-    console.log(item);
   }
 
   render(){
@@ -29,6 +23,7 @@ class App extends Component{
       height:"100%",
       position:"absolute",
       backgroundColor:"gray",
+      overflow:"hidden"
     };
 
     return (
