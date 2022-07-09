@@ -21,16 +21,28 @@
 }
 .resize .right-top{
     position: absolute;
-    right:0;
-    top:0;
+    right:calc(-1 * (var(--resize-size)/2));
+    top:calc(-1 * (var(--resize-size)/2));
+    background-color: white;
+    width:var(--resize-size);
+    height:var(--resize-size);
+    outline: 3px solid green;
 }
 .resize .left-bottom{
     position: absolute;
-    left:0;
-    bottom:0;
+    left:calc(-1 * (var(--resize-size)/2));
+    bottom:calc(-1 * (var(--resize-size)/2));
+    background-color: white;
+    width:var(--resize-size);
+    height:var(--resize-size);
+    outline: 3px solid green;
 }
-.resize .left-right{
+.resize .right-bottom{
     position: absolute;
-    right:0;
-    bottom:0;
+    right:calc(-1 * (var(--resize-size)/2));
+    bottom:calc(-1 * (var(--resize-size)/2));
+    background-color: white;
+    width:var(--resize-size);
+    height:var(--resize-size);
+    outline: 3px solid green;
 }

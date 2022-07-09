@@ -10,6 +10,16 @@ export default class Flow extends Component{
         this.width = props.width;
         this.height = props.height;
         this.children = props.children;
+
+        this.state = {
+            clicked:false
+        };
+    }
+
+    clicked(){
+        this.setState({
+            clicked:!this.state.clicked
+        });
     }
 
     render(){
@@ -25,8 +35,8 @@ export default class Flow extends Component{
         };
 
         return (
-            <div style={styleWithChildren}>
-                <Resize />
+            <div style={styleWithChildren} onClick={this.clicked()}>
+                {this.state.clicked ? <Resize /> : <div></div>}
                 {this.children}
             </div>
         );
