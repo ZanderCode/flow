@@ -103,6 +103,7 @@ export default class Flow extends Component{
             bottomLeftResizeVal: 0,
             bottomRightResizeVal: 0,
             rotMagnet:false,
+            isRotating:false
         });
     }
 
@@ -272,7 +273,8 @@ export default class Flow extends Component{
             position:"absolute",
             top:this.state.y,
             left:this.state.x,
-            backgroundColor:"lightgray",
+            backgroundColor:"white",
+            border:"1px solid black",
             borderRadius: "10px",
             userSelect:"none",
             zIndex:this.state.zIndex,
