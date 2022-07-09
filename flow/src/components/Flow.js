@@ -13,7 +13,10 @@ export default class Flow extends Component{
             height: props.height,
             x:props.x,
             y:props.y,
-            isMoving:false
+            isMoving:false,
+            zIndex: 1, // Layering
+            offsetX: 0, // Drag from clickX
+            offsetY: 0  // Drag from clickY
         };
     }
 
@@ -24,14 +27,23 @@ export default class Flow extends Component{
     });
 
     // Shows and hides the resize options
+    // Also "unfocuses the data" since it changes its layer
+    // TODO: Potensh' Layering subsystem re-design?
     reveal = () =>{
-        this.setState({
-            clicked:!this.state.clicked
-        });
+
+        let data = {
+            clicked: !this.state.clicked,
+        }
+
+        this.setState(data);
     }
 
-    startMove = () =>{
+    startMove = (e) =>{
         this.setState({
+            // Set the inital offset for "Drag from clickX" above
+            // Set the inital offset for "Drag from clickY" above
+            offsetX: e.clientX - this.state.x,
+            offsetY: e.clientY - this.state.y,
             isMoving: true,
         });
     }
@@ -45,8 +57,9 @@ export default class Flow extends Component{
     move = (e) => {
         if(this.state.isMoving){
             this.setState({
-                x:e.clientX - this.state.width/2,
-                y:e.clientY - this.state.height/2,
+                // Simply move component to mouse cursor - offset = drag from click "effect"
+                x:e.clientX - this.state.offsetX,
+                y:e.clientY - this.state.offsetY,
             });
         }
     }
@@ -62,7 +75,8 @@ export default class Flow extends Component{
             left:this.state.x,
             backgroundColor:"lightgray",
             borderRadius: "10px",
-            userSelect:"none"
+            userSelect:"none",
+            zIndex:this.state.zIndex
         };
 
         return (
