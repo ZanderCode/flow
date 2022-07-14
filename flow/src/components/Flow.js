@@ -36,12 +36,12 @@ export default class Flow extends Component{
 
             isRotating: false,
             rotMagnet:false,
-            rot: 0
+            rot: 0,
+
+            moveMagnet: false,
         };
 
-        window.addEventListener("keydown", this.keyDown, true);
-        window.addEventListener("keyup", this.keyUp, true);
-        window.addEventListener("mouseup", this.endMove, true);
+        this.MAGNET = 20;
     }
 
     // Used to get the Flow components width and height after mount
@@ -50,11 +50,22 @@ export default class Flow extends Component{
         height: node.getBoundingClientRect().height
     });
 
+    componentDidMount(){
+        window.addEventListener("keydown", this.keyDown, true);
+        window.addEventListener("keyup", this.keyUp, true);
+        window.addEventListener("mouseup", this.endMove, true);
+    }
+
     keyDown = (e) =>{
         // CTRL key = 17
         if (e.keyCode === 17 && this.state.isRotating) {
             this.setState({
                 rotMagnet:true,
+            })
+        }
+        if (e.keyCode === 17 && this.state.isMoving) {
+            this.setState({
+                moveMagnet:true,
             })
         }
     }
@@ -65,6 +76,11 @@ export default class Flow extends Component{
         if (e.keyCode === 17 && this.state.isRotating) {
             this.setState({
                 rotMagnet:false,
+            })
+        }
+        if (e.keyCode === 17 && this.state.isMoving) {
+            this.setState({
+                moveMagnet:false,
             })
         }
     }
@@ -103,6 +119,7 @@ export default class Flow extends Component{
             bottomLeftResizeVal: 0,
             bottomRightResizeVal: 0,
             rotMagnet:false,
+            moveMagnet:false,
             isRotating:false
         });
     }
@@ -121,10 +138,7 @@ export default class Flow extends Component{
             return;
         }
 
-        let data = {
-
-        }
-
+        let data = {}
 
         // For Rotating:
 
@@ -140,7 +154,7 @@ export default class Flow extends Component{
             if (this.state.rotMagnet){
                 data = {
                     // The angle between the cursor and center of node
-                    rot: Math.floor(degree / 15) * 15,
+                    rot: Math.floor(degree / this.MAGNET) * this.MAGNET,
                 }
             }
 
@@ -219,9 +233,22 @@ export default class Flow extends Component{
                 return;
         }
 
+
         // For Regular Movement:
 
         if(this.state.isMoving){
+
+            if (this.state.moveMagnet){
+                data = {
+                    // The angle between the cursor and center of node
+                    x: Math.floor((e.clientX - (this.state.width/2)) / this.MAGNET) * this.MAGNET,
+                    y: Math.floor((e.clientY - (this.state.height/2)) / this.MAGNET) * this.MAGNET,
+                }
+                this.setState(data);
+                return;
+            }
+
+
             this.setState({
                 clicked:false,
                 // Simply move component to mouse cursor - offset = drag from click "effect"
@@ -275,7 +302,7 @@ export default class Flow extends Component{
             left:this.state.x,
             backgroundColor:"white",
             border:"1px solid black",
-            borderRadius: "10px",
+            borderRadius: "5px",
             userSelect:"none",
             zIndex:this.state.zIndex,
             textOverflow:"wrap",

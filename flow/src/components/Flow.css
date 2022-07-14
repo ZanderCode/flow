@@ -1,6 +1,6 @@
 :root{
     --resize-size: 10px;
-    --rot-size:50px;
+    --rot-size:40px;
 }
 
 .resize{
@@ -16,12 +16,15 @@
     width:var(--rot-size);
     height:var(--rot-size);
     position: absolute;
-    right:calc(-1 * (var(--rot-size)));
-    top:calc(-1 * (var(--rot-size)) + var(--rot-size));
+    right:calc(var(--rot-size) * -1.2);
+    top:calc(var(--rot-size) * -1.2);
     width:"fit-content";
     height:"fit-content";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
 }
-
 .right-top-rotate{
     display: flex;
     justify-content: center;
