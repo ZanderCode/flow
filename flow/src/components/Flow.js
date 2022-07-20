@@ -22,6 +22,7 @@ export default class Flow extends Component{
             offsetX: 0, // Drag from x click pos
             offsetY: 0,  // Drag from y click pos
 
+            // Flags for resizing
             topLeftResizeVal: 0,
             topRightResizeVal: 0,
             bottomLeftResizeVal: 0,
@@ -30,8 +31,8 @@ export default class Flow extends Component{
             origRisizeY:0,
             origResizeW:0,
             origRisizeH:0,
-            isResized: false,
 
+            isResized: false,
             mouseUp:false,
 
             isRotating: false,
@@ -51,13 +52,14 @@ export default class Flow extends Component{
     });
 
     componentDidMount(){
+        // Listeners for ctrl key magnet effect
         window.addEventListener("keydown", this.keyDown, true);
         window.addEventListener("keyup", this.keyUp, true);
         window.addEventListener("mouseup", this.endMove, true);
     }
 
     keyDown = (e) =>{
-        // CTRL key = 17
+        // CTRL key = 17 which initates magnet effects
         if (e.keyCode === 17 && this.state.isRotating) {
             this.setState({
                 rotMagnet:true,
@@ -144,6 +146,7 @@ export default class Flow extends Component{
 
         if (this.state.isRotating){
 
+            // angle between mouse and Flow center
             let rotash = Math.atan( (e.clientX-(this.state.x+(this.state.width)))/(e.clientY-(this.state.y+(this.state.height))) );
             let degree = (rotash * (180 / Math.PI) * -1);
             data = {
@@ -153,7 +156,8 @@ export default class Flow extends Component{
 
             if (this.state.rotMagnet){
                 data = {
-                    // The angle between the cursor and center of node
+                    // The angle between the cursor and center of node, but rounded to nearest factor of this.MAGNET
+                    // hence the "magneting" to grid effect
                     rot: Math.floor(degree / this.MAGNET) * this.MAGNET,
                 }
             }
@@ -329,6 +333,7 @@ export default class Flow extends Component{
                     </div>
                 : <div></div>}
 
+                {/* The rotating buttons for controlling size*/}
                 {this.state.clicked ? 
                     <div className="rotate" >
                         <div className="right-top-rotate rotate-hover" onMouseDown={this.startRotation} onMouseUp={this.stopRotation}>

@@ -4,10 +4,9 @@ import Flow from "./components/Flow";
 import { Button } from '@mui/material';
 
 import IMG from "./imgs/mush.jpg";
-import Hierarchy from "./components/Hierarchy";
 
-import { initializeFirebaseFlows, logInClient, signOutClient } from "./services/DatabaseService";
-
+import { getDataFrom, initializeFirebaseFlows } from "./services/DatabaseService";
+import { logInClient, signOutClient } from "./services/AuthService";
 
 class App extends Component{
 
@@ -28,11 +27,22 @@ class App extends Component{
 
   async logIn(){
     // Imported from AuthService.js
-    await logInClient((result)=>{
+    await logInClient((result,isNew)=>{
+      if (isNew){
+        // clean new account
+        initializeFirebaseFlows(result.user.uid);
+      }
+
+      getDataFrom(result.user.uid, (data)=>{
+        console.log(data);
+      });
+
       this.setState({
         username: result.user.displayName,
+        uid: result.user.uid,
         loggedIn: true
       });
+
     });
   }
 
@@ -58,11 +68,14 @@ class App extends Component{
 
     return (
       <div className="main-body" style={mainStyle}>
+
         {this.state.username != null ? <h1>{this.state.username}</h1> : <h1>No user</h1>}
         {this.state.username == null ? 
         <Button variant="outlined" onClick={()=>this.logIn()}>Log In</Button> : 
         <Button variant="outlined" onClick={()=>this.signOut()}>Sign Out</Button>}
         
+        {this.state.loggedIn ? <Button onClick={()=>{getDataFrom(this.state.uid)}}>getData</Button> : <div></div>}
+
         <div>
           <Flow x={100} y={100}>
             <h1>Mushroom 1</h1>

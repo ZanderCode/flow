@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { getFirestore, query, collection, getDocs, doc, addDoc, setDoc } from 'firebase/firestore';
+import { getFirestore, onSnapshot, doc, setDoc, getDoc, query} from 'firebase/firestore';
 
 // Downloaded data JSON from firebase console.
 function getFirebaseConfig(){
@@ -16,26 +15,6 @@ function getFirebaseConfig(){
 
 const app = initializeApp(getFirebaseConfig());
 const db = getFirestore(app);
-const auth = getAuth();
-const provider = new GoogleAuthProvider();
-
-export async function logInClient(callback){
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        callback(result);
-      }).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(error);
-      });
-  }
-
-export async function signOutClient(callback){
-    await signOut(auth);
-    callback();
-}
 
 // Creates a spot in the users database for this user.
 export async function initializeFirebaseFlows(uid){
@@ -57,11 +36,8 @@ export async function initializeFirebaseFlows(uid){
     }
 }
 
-export async function getDataFrom(db, uid){
-    const q = query(collection(db, "users", uid));
-    
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
+export async function getDataFrom(uid,onData){
+    const data = onSnapshot(doc(db,"users",uid),(d)=>{
+      onData(d.data());
     });
-  }
+}
