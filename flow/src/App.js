@@ -3,10 +3,11 @@ import Flow from "./components/Flow";
 
 import { Button } from '@mui/material';
 
-import IMG from "./imgs/mush.jpg";
+import "./App.css";
 
 import { getDocFrom, getDocsFrom, initializeFirebaseFlows } from "./services/DatabaseService";
 import { logInClient, signOutClient } from "./services/AuthService";
+import PageContainer from "./components/PageContainer";
 
 class App extends Component{
 
@@ -41,7 +42,7 @@ class App extends Component{
       });
 
       this.setState({
-        username: result.user.displayName,
+        username: result.user.displayName.split(" ")[0],
         uid: result.user.uid,
         loggedIn: true
       });
@@ -72,12 +73,31 @@ class App extends Component{
     return (
       <div className="main-body" style={mainStyle}>
 
-        {this.state.username != null ? <h1>{this.state.username}</h1> : <h1>No user</h1>}
-        {this.state.username == null ? 
-        <Button variant="outlined" onClick={()=>this.logIn()}>Log In</Button> : 
-        <Button variant="outlined" onClick={()=>this.signOut()}>Sign Out</Button>}
-
-        
+        <div className="header">
+            <div className="header-centerable">
+              {this.state.username != null ? <div className="avatar"></div> : <div></div>}
+              {this.state.username != null ? <h2 className="header-text">{this.state.username}</h2> : <div></div>}
+              {this.state.username == null ? <Button variant="contained" color="primary" onClick={()=>this.logIn()}>Log In</Button> : 
+              <Button variant="contained" color="primary" onClick={()=>this.signOut()}>Log Out</Button>}
+            </div>
+        </div>
+      
+        <h1 className="your-docs">Your Documents...</h1>
+        <div className="pages">
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+          <PageContainer img={"img/path"} />
+        </div>
 
       </div>
     );

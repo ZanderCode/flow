@@ -1,3 +1,54 @@
+
+:root{
+  --middle:85%;
+}
+
 .main-body{
   border: 10px solid red;
+}
+
+.header{
+  height:min-content;
+  width: 100%;
+  background-color: #3D3C42;
+  color:white;
+  padding-right: 20px;
+  padding:10px;
+}
+
+.header-centerable{
+  width:var(--middle);  
+
+  justify-content: right;
+  align-items: center;
+  display: flex;
+}
+
+.header-text{
+  margin: 0px 20px;
+  padding: 0 20px 0 0;
+}
+
+.avatar{
+  width:25px;
+  height:25px;
+  border-radius: 100%;
+  background-color: #EEEEEE;
+  border: 5px solid #444444;
+}
+
+.pages{
+  width:var(--middle);
+  margin:50px auto;
+  display: flex;
+  gap:20px;
+  align-items: left;
+  justify-content:baseline;
+  flex-wrap: wrap;
+}
+
+.your-docs{
+  width:var(--middle);
+  margin:50px auto;
+  color:#999999;
 }
