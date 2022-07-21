@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, onSnapshot, doc, setDoc, getDoc, query} from 'firebase/firestore';
+import { getFirestore, onSnapshot, doc, setDoc, getDocs, collection, query} from 'firebase/firestore';
 
 // Downloaded data JSON from firebase console.
 function getFirebaseConfig(){
@@ -36,8 +36,17 @@ export async function initializeFirebaseFlows(uid){
     }
 }
 
-export async function getDataFrom(uid,onData){
+export async function getDocFrom(uid,onData){
+    // Single Doc
     const data = onSnapshot(doc(db,"users",uid),(d)=>{
       onData(d.data());
     });
+
+}
+
+export async function getDocsFrom(uid,onData){
+    // All Docs
+    const data = collection(db,"users",uid,"pages");
+    const res = await getDocs(data);
+    onData(res);
 }

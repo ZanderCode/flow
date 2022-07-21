@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 
 import IMG from "./imgs/mush.jpg";
 
-import { getDataFrom, initializeFirebaseFlows } from "./services/DatabaseService";
+import { getDocFrom, getDocsFrom, initializeFirebaseFlows } from "./services/DatabaseService";
 import { logInClient, signOutClient } from "./services/AuthService";
 
 class App extends Component{
@@ -33,8 +33,11 @@ class App extends Component{
         initializeFirebaseFlows(result.user.uid);
       }
 
-      getDataFrom(result.user.uid, (data)=>{
-        console.log(data);
+      // This user has pages?
+      getDocsFrom(result.user.uid, (data)=>{
+        data.forEach((data)=>{
+          console.log(data)
+        })
       });
 
       this.setState({
@@ -73,43 +76,8 @@ class App extends Component{
         {this.state.username == null ? 
         <Button variant="outlined" onClick={()=>this.logIn()}>Log In</Button> : 
         <Button variant="outlined" onClick={()=>this.signOut()}>Sign Out</Button>}
+
         
-        {this.state.loggedIn ? <Button onClick={()=>{getDataFrom(this.state.uid)}}>getData</Button> : <div></div>}
-
-        <div>
-          <Flow x={100} y={100}>
-            <h1>Mushroom 1</h1>
-            <ul>
-              <li>Hair?</li>
-              <li>Spore print</li>
-              <li>Cap width</li>
-            </ul>
-          </Flow>
-
-          <Flow x={300} y={100}>
-            <h1>Mushroom 2</h1>
-            <ul>
-              <li>Hair?</li>
-              <li>Spore print</li>
-              <li>Cap width</li>
-            </ul>
-          </Flow>
-
-          <Flow x={500} y={100}>
-            <h1>Image Inspo</h1>
-            <img src={IMG} style={{width:"150px"}} draggable="false"/>
-          </Flow>
-
-          <Flow x={300} y={500}>
-            <h1>Important links</h1>
-            <ol>
-              <li><a href="#">death cap mushroom</a></li>
-              <li><a href="#">puff ball mushroom</a></li>
-              <li><a href="#">puff ball mushroom</a></li>
-              <li><a href="#">other inspiration</a></li>
-            </ol>
-          </Flow>
-        </div>
 
       </div>
     );
