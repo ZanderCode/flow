@@ -82,21 +82,13 @@ export class HomePage extends Component{
       });
     });
   }
-  // async getPages(uid){
-  //   let pages = [];
-  //   // This user has pages? Get the data for them
-  //   await getDocsFrom(uid, (data)=>{
-  //     data.forEach((data)=>{
-  //       pages.push(data.data());
-  //     })
-  //   });
-
-  //   return pages;
-  // }
 
   createPages(){
-    //const pages = this.state.pages.page.names;
-    return (<PageContainer name={this.state.pages.page.names}/>);
+    let data = [];
+    for(let i=0; i <this.state.pages.page.names.length;i++){
+      data.push(<PageContainer key={"page"+i} name={this.state.pages.page.names[i]}/>);
+    }
+    return data;
   }
 
   render(){
@@ -108,9 +100,9 @@ export class HomePage extends Component{
       border:"1px solid black"
     };
 
-    let renderAbleContent = (<div><h1>No Files...</h1></div>);
+    let renderAbleContent = [];
     if (this.state.loggedIn){
-      renderAbleContent = this.createPages();
+        renderAbleContent = this.createPages();
     }
 
     return (
@@ -130,7 +122,7 @@ export class HomePage extends Component{
         <div>
           <h1 className="your-docs">Your Documents...</h1>
           <div className="pages">
-            {renderAbleContent}
+            {renderAbleContent.map((comp,i)=> comp)}
           </div>
         </div> : <div></div> }
 
