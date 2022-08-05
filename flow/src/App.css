@@ -42,9 +42,16 @@
   margin:50px auto;
   display: flex;
   gap:20px;
+  row-gap: 50px;
   align-items: left;
   justify-content:baseline;
   flex-wrap: wrap;
+
+  border:3px solid #999999;
+  padding-left:50px;
+  padding-right:50px;
+  padding-top: 50px;
+  padding-bottom:50px;
 }
 
 .your-docs{

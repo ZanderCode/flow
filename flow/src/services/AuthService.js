@@ -10,6 +10,8 @@ export async function logInClient(callback){
       .then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const isNew = getAdditionalUserInfo(result).isNewUser;
+
+        // Sent back to caller for reference and authentication
         callback(result,isNew);
       }).catch((error) => {
         const errorCode = error.code;

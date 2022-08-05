@@ -3,3 +3,27 @@
     height:200px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
+.page-container:hover{
+    box-shadow: rgba(0, 0, 0, 0.50) 0px 3px 8px;
+    cursor: pointer;
+}
+
+.page-container img{
+    width:80%;
+    display: block;
+    margin:auto;
+}
+
+.page-title{
+    font-size: 20px;
+    position:relative;
+    box-shadow: rgba(0, 0, 0, 0.50) 0px 3px 8px;
+    background-color: white;
+    padding:10px;
+    width: fit-content;
+    max-width: 200px;
+    max-height: 15px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+}
